@@ -68,7 +68,7 @@
     "react-tweet-embed": "^2.0.0",
     "react-use": "^17.3.2",
     "rss": "^1.2.2",
-    "sharp": "^0.31.1",
+    "sharp": "^0.32.6",
     "sitemap": "^7.1.1"
   },
   "devDependencies": {
