@@ -3,10 +3,11 @@ on:
   pull_request:
   push:
     branches: [main]
-permissions:
-  contents: read
+permissions: {}
 jobs:
   validate:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,7 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20.19.4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
         with:
           version: 10.20.0
       - run: pnpm --dir frontend install --frozen-lockfile --filter "@daodao/blog-content..."
@@ -31,6 +32,7 @@ jobs:
         env:
           BLOG_CONTENT_DIR: ${{ github.workspace }}/content
   trigger-website:
+    permissions: {}
     needs: validate
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
