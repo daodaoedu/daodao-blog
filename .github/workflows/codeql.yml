@@ -61,6 +61,7 @@ jobs:
           category: '/language:${{ matrix.language }}'
           output: ${{ runner.temp }}/codeql-results
           upload: ${{ vars.CODEQL_ADVANCED_UPLOAD_ENABLED == 'true' && 'always' || 'never' }}
+          upload-database: false
       - name: Verify generated SARIF
         env:
           SARIF_ROOT: ${{ runner.temp }}/codeql-results
