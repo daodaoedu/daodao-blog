@@ -15,7 +15,7 @@
 在配對的 daodao-f2e checkout 執行（root 改為內容 checkout 的絕對路徑）：
 
 ```sh
-pnpm --filter @daodao/blog-content validate --root /absolute/path/daodao-blog --mode draft
+BLOG_CONTENT_DIR=/trusted/path/daodao-blog pnpm --filter @daodao/blog-content validate --root /trusted/path/daodao-blog --mode draft
 ```
 
 草稿模式只證明格式與檔案參照符合契約，不代表內容事實正確、編輯核准或已發布。發布模式預設拒絕缺核准證據或 digest 不符的內容；具體 CLI 參數以共用套件 README 為準。核准紀錄只用來綁定已審查內容，不能替代 Git 權限與人工核准流程。
@@ -24,4 +24,8 @@ pnpm --filter @daodao/blog-content validate --root /absolute/path/daodao-blog --
 
 ## 舊站遷移狀態
 
-舊 Notion/Next.js 程式暫留，待 Hosting 綁定及既有 PR 順序查核完成再清除。新資料不會被舊站自動載入。此分支沒有部署、網域切換、Git 歷史重寫或正式文章發布。
+本分支已移除舊 Notion/Next.js 網站程式與套件檔，但尚未合併或部署；Git 歷史完整保留。目前 main 的舊 Cloudflare Pages 綁定仍啟用正式與全分支預覽建置，所以此純內容轉換 PR 在切換設定經核准並回讀前不可合併。沒有變更外部設定、重寫歷史或正式發布文章。
+
+## CLI 信任範圍
+
+執行前先準備配對前端的 config 產物（`pnpm --filter @daodao/config generate:env`），並由可信任呼叫端設定 `BLOG_CONTENT_DIR` 為已確認的 checkout。`--root` 必須落在該範圍，不可從文章內容自動擴張授權。使用私有核准／baseline 時另設定與公開內容分離的 `BLOG_EVIDENCE_ROOT`，檔案需位於該受控目錄內。這些 scope 是呼叫端的授權邊界，不是 writer 自行挑一個檔案後就取得的權限。
