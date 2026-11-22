@@ -31,18 +31,3 @@ jobs:
       - run: pnpm --dir frontend --filter @daodao/blog-content validate --root "$GITHUB_WORKSPACE/content" --mode draft
         env:
           BLOG_CONTENT_DIR: ${{ github.workspace }}/content
-  trigger-website:
-    permissions: {}
-    needs: validate
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dispatch website-only release on protected frontend channel
-        env:
-          GH_TOKEN: ${{ secrets.BLOG_FRONTEND_DISPATCH_TOKEN }}
-          CONTENT_SHA: ${{ github.sha }}
-          FRONTEND_REF: ${{ vars.BLOG_FRONTEND_REF }}
-        run: |
-          if [ -z "$GH_TOKEN" ]; then echo 'Missing scoped frontend workflow-dispatch token; no release triggered'; exit 1; fi
-          case "$FRONTEND_REF" in dev|prod) ;; *) echo 'Missing protected frontend channel ref (dev/prod only)'; exit 1;; esac
-          gh workflow run blog-release.yml --repo daodaoedu/daodao-f2e --ref "$FRONTEND_REF" -f operation=publish -f "content_sha=$CONTENT_SHA"

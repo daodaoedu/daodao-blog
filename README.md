@@ -1,21 +1,36 @@
 # DaoDao Blog content
 
-純內容分支：雙語文章位於 articles/zh-tw/、articles/en/，共用stable id；authors.json、topics.json和images/提供作者、主題及可選圖片。Git歷史完整保留，沒有repo刪除或historyrewrite。欄位及validator唯一權威位於daodao-f2e/packages/blog-content。
+This repository supplies bilingual Markdown to `daodao-f2e/apps/website`. After this migration, it no longer builds a standalone Notion/Next.js application. Git history is preserved. Paired articles live in `articles/zh-tw/` and `articles/en/`, with matching stable IDs; `authors.json`, `topics.json` and optional `images/` provide public dependencies. The only schema and validator are in the selected frontend's `packages/blog-content`.
 
-現有範例仍是未經人工核准的格式草稿，不因進入此分支而可公開發布。核准與私人研究紀錄不放內容庫。
+## Write, review and publish
 
-## 合併前必要條件
+1. Prepare complete zh-TW and English drafts, then an isolated content branch and PR when review preparation is authorized. Run the shared validator in draft mode. An open PR or passing validator is not editorial approval.
+2. Supply both rendered article URLs as part of the review handoff. An ordinary preview uses an explicit immutable content commit. Keep private research and approval evidence outside this public repository. Shared dev is publicly reachable; noindex is not privacy protection.
+3. Revise the same PR, rebuild and verify its preview, and record the current content version. The user approves that exact bilingual version before public release. Preserve historical IDs, slugs and original publication dates.
+4. After authorized merge, verify the merged article/dependency digest matches the reviewed version. A merge alone does not deploy Website. Follow the production operator process below and verify the actual public result.
 
-**不可直接合併此純內容轉換。** Cloudflare Pages daodao-blog仍綁main正式部署與所有branch預覽，舊buildcommand指向Next/Notion。必須先完成Hosting切換策略、停用舊Git builds並回讀正式/preview設定；本PR沒有更改外部設定。舊Dependabot7張PR的package/yarn.lock升級於純內容架構不適用，由維護者於切換時處理，未擅自關閉。
+The current `blog-dev-bootstrap.yml` / `publication-test` operation includes synthetic engineering fixtures and deliberate failure/retry/rollback tests. It is not a routine per-PR preview service. Do not run that entire matrix or bypass managed ownership merely to obtain a draft preview. If no authorized ordinary preview route is available, report the exact missing capability and keep rendered preview blocked. This document and plugin instructions do not provision automatic previews.
 
-## 驗證與觸發
+## Validation and release ownership
 
-content-contract.yml使用已審查的固定f2eSHA執行同一validator。PR為draft格式檢查，不代表人工核准；main內容更新後以專用BLOG_FRONTEND_DISPATCH_TOKEN依保護的BLOG_FRONTEND_REF（首次核准開發測試為dev、正式pin流程為prod）觸發f2e的blog-release.yml，傳完整content SHA。缺token就停止，不假稱發布。此repo目前尚無該secret；未自行建立或驗證crossrepo dispatch。
+`content-contract.yml` validates PRs and main pushes in draft mode using the reviewed pinned shared validator. Source-aware CodeQL continues to scan actual tracked languages. Neither workflow is editorial approval.
 
-實際發布仍需f2e保護的frontend pin、私人approval evidence、前次baseline與已驗證的development deployment adapter。固定雙SHA、build、deploy、smoke和rollback各自記錄；不走force-deploy、不觸發product。詳細CLI/設定見f2e docs/blog/releases.md。
+Automatic cross-repository publication was explicitly deferred in [#536 acceptance](https://github.com/daodaoedu/daodao/issues/536#issuecomment-6888528875). The obsolete main-push job calling `blog-release.yml` has been removed: it depended on an unconfigured dispatch token and does not select the current managed production publisher. Automatic PR previews and content-to-production dispatch are not installed by this change. Do not add placeholder credentials or use an all-app/force deploy to compensate.
 
-## Hosting 切換後的安全掃描設定
+For production, an authorized operator inspects `blog-prod-publish.yml` and `docs/blog/production-publication.md` at the current official frontend `prod` commit. Read the live JSON marker; preserve existing content and approvals; validate the intended complete content set in publish mode; prepare the protected target/baseline/approval variables. Dispatch that workflow on `prod` with `ci_run_id` identifying a successful canonical Linode CI run for that exact current prod commit. Ordinary publication uses `legacy_bootstrap=false`. Freeze inputs, honor existing queue/ownership guards, and verify the live bilingual content, images and marker. The publisher deploys Website only; content changes must not build or recreate Product.
 
-目前 GitHub CodeQL default setup 仍依舊站選擇 JavaScript/TypeScript。純內容 PR 在移除舊 JS 後會以「no source code seen」結束（例如 run 43368332365，finalize exit 32），這是掃描設定與分支內容不相符，不能以加入假 JS 或降低規則處理。現行 main 仍服務舊 JS 網站，所以本 PR 不會提前停用其安全掃描。
+Keep raw approvals and secrets outside this repository. Required settings are maintainer operations, not values supplied by an article or PR. Missing host Actions/variable capabilities require an exact operator handoff rather than a fictitious completed release.
 
-完成經核准的 Hosting 切換、實際移除舊 JS 後，維護者須依純內容資料與 Actions workflow 重新設定適用的 CodeQL 語言／掃描方式，回讀設定並確認新掃描成功。此操作尚未執行；它與 Cloudflare 舊 Git build 綁定一起保留為切換阻擋，不因內容 validator 通過而視為完成。
+## Migration evidence and remaining gates
+
+The following historical receipts do not replace checking current settings:
+
+- [#536 acceptance](https://github.com/daodaoedu/daodao/issues/536#issuecomment-6888528875) covers manual dev publication and failure/retry/stale/paired rollback. Cross-repo automation was deferred.
+- [#539 PM approval](https://github.com/daodaoedu/daodao/issues/539#issuecomment-6893854188) covers the actual bilingual `learning-group-weekly-review` article. It does not approve the format-only samples in migration PR #9 or any new/modified article.
+- [First managed production run45022473953](https://github.com/daodaoedu/daodao-f2e/actions/runs/45022473953) published frontend `59eb476f9a5e0bb49aa07b5400ac1cc0e491ca36` and content `0daa4231bb2072657c807813e960919b982f9d8e`; the original cutover completed. Normal success did not exercise production rollback.
+- Cloudflare legacy automatic Git builds were previously paused while retaining the old artifact, as recorded in [the scanning transition guide](docs/codeql-transition.md). Before merging this migration, a maintainer must recheck the actual production and branch-preview settings remain paused. Historical failed Cloudflare checks on #10 are old standalone-app builds; do not recreate that obsolete application merely to make them green.
+- Preserve source-aware CodeQL during #9/#10 integration. The prior transition changed default setup to `not-configured` and enabled advanced uploads; verify current settings and the merged main analysis. Do not disable scanning or dismiss existing alerts to make migration pass.
+
+Legacy Dependabot package/yarn.lock PRs belong to the retired application. Recheck their applicability after migration; this repair does not close them or dismiss their alerts.
+
+PR #10 is stacked on #9's branch. Integrate both reviewed trees without dropping later CodeQL changes and verify the approved article bytes remain unchanged. The old full publisher PR `daodao-f2e#1199` has a separate scope; do not merge it or declare all original requirements complete merely because this narrow route works. PR descriptions and local green checks alone do not clear remaining migration gates.
