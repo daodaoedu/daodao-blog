@@ -1,0 +1,33 @@
+name: Blog content contract
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions: {}
+jobs:
+  validate:
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: content
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: daodaoedu/daodao-f2e
+          ref: 0e7b4bf8b481d99d8c625f19ddf75e78ba9766ec
+          path: frontend
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+        with:
+          version: 10.20.0
+      - run: pnpm --dir frontend install --frozen-lockfile --filter "@daodao/blog-content..."
+      - run: pnpm --dir frontend --filter @daodao/config generate:env
+      - run: pnpm --dir frontend --filter @daodao/blog-content validate --root "$GITHUB_WORKSPACE/content" --mode draft
+        env:
+          BLOG_CONTENT_DIR: ${{ github.workspace }}/content
