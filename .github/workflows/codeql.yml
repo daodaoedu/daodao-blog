@@ -1,0 +1,94 @@
+name: CodeQL source-aware
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 4 * * 2'
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.languages.outputs.matrix }}
+      languages: ${{ steps.languages.outputs.languages }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Test language selection
+        run: bash .github/scripts/__tests__/test-codeql-languages.sh
+      - name: Select tracked source languages
+        id: languages
+        run: bash .github/scripts/codeql-languages.sh . HEAD "$RUNNER_TEMP/codeql-source-inventory"
+      - name: Save immutable source inventory
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codeql-source-inventory
+          path: ${{ runner.temp }}/codeql-source-inventory
+          if-no-files-found: error
+          retention-days: 7
+  analyze:
+    needs: detect
+    if: needs.detect.outputs.languages != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.detect.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Initialize CodeQL
+        id: init
+        uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: none
+          queries: security-extended
+      - name: Analyze source
+        uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4
+        with:
+          category: '/language:${{ matrix.language }}'
+          output: ${{ runner.temp }}/codeql-results
+          upload: ${{ vars.CODEQL_ADVANCED_UPLOAD_ENABLED == 'true' && 'always' || 'never' }}
+          upload-database: false
+      - name: Verify generated SARIF
+        env:
+          SARIF_ROOT: ${{ runner.temp }}/codeql-results
+        run: |
+          python3 - <<'PY'
+          import glob, json, os
+          files = glob.glob(os.path.join(os.environ['SARIF_ROOT'], '*.sarif'))
+          assert files, 'CodeQL produced no SARIF'
+          summary = []
+          for file in files:
+              document = json.load(open(file))
+              assert document['version'] == '2.1.0'
+              assert document['runs'], 'CodeQL produced no analysis runs'
+              for run in document['runs']:
+                  assert run['tool']['driver']['name'] == 'CodeQL'
+                  summary.append({'file': os.path.basename(file), 'results': len(run.get('results', [])), 'category': run.get('automationDetails', {}).get('id')})
+          with open(os.path.join(os.environ['SARIF_ROOT'], 'verification.json'), 'w') as output:
+              json.dump(summary, output, indent=2)
+          PY
+      - name: Save CodeQL evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codeql-proof-${{ matrix.language }}
+          path: |
+            ${{ runner.temp }}/codeql-results
+            ${{ runner.temp }}/codeql_databases/**/codeql-database.yml
+            ${{ runner.temp }}/codeql_databases/**/log
+          if-no-files-found: error
+          retention-days: 7

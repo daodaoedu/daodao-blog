@@ -24,7 +24,9 @@ BLOG_CONTENT_DIR=/trusted/path/daodao-blog pnpm --filter @daodao/blog-content va
 
 ## 舊站遷移狀態
 
-本分支已移除舊 Notion/Next.js 網站程式與套件檔，但尚未合併或部署；Git 歷史完整保留。目前 main 的舊 Cloudflare Pages 綁定仍啟用正式與全分支預覽建置，所以此純內容轉換 PR 在切換設定經核准並回讀前不可合併。沒有變更外部設定、重寫歷史或正式發布文章。
+本分支移除舊 Notion/Next.js 網站程式與套件檔，Git 歷史完整保留。舊 Cloudflare 自動建置曾由維護者暫停；合併前仍須回讀目前正式／分支預覽設定，不以歷史失敗 check 或過期 PR 說明推定現況。掃描切換及現行發布入口見 README.md 與 docs/codeql-transition.md。
+
+內容格式驗證、PR 合併、dev 預覽及正式發布是不同階段。main 更新不自動發布；現行正式站使用前端 prod 的 blog-prod-publish.yml，指定完整內容版本並檢查真人核准及同版 CI。既有文章的已發布與核准證據僅適用其確切內容，不適用本分支格式範例或未來修改。不可為通過驗證自行產生核准證據。
 
 ## CLI 信任範圍
 
