@@ -2,7 +2,7 @@
 id: preview-smoke-20261123
 lang: en
 slug: preview-smoke-20261123
-title: "Preview verification test: version one"
+title: "Preview verification test: version two"
 description: A practical weekly check-in routine for teachers and community facilitators, with three adaptable questions, example answers and ways to follow up.
 author_id: daodao-team
 published_at: '2026-11-13'

@@ -2,7 +2,7 @@
 id: preview-smoke-20261123
 lang: zh-TW
 slug: preview-smoke-20261123
-title: "預覽驗證測試：第一版"
+title: "預覽驗證測試：第二版"
 description: 從實際嘗試、遇到的困難到下一個小步驟，提供老師與社群帶領者可調整的每週回顧提問、回覆示例與跟進方式。
 author_id: daodao-team
 published_at: '2026-11-13'
