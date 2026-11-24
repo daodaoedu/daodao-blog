@@ -2,7 +2,7 @@
 id: build-in-public-1
 lang: en
 slug: build-in-public-1
-title: "Build in Public #1 | Why Dao Dao Is Moving from Individual Learning to Supporting Learning Professionals"
+title: "#1 Build in Public | Why Dao Dao Is Moving from Individual Learning to Supporting Learning Professionals"
 description: "Dao Dao is evolving from an individual learning tool into a platform for learning professionals. We share a month of exploration into everyday practice, visible progress, meaningful feedback, and the value of another tool."
 author_id: daodao-team
 published_at: '2026-11-24'
