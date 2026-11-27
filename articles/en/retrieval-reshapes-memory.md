@@ -22,7 +22,7 @@ sources:
 
 At the end of a workshop or coaching conversation, it is natural to ask questions that help learners consolidate what they just experienced. Sometimes we ask, "Which specific example stood out to you most today?" Other times we ask, "What underlying principle connects these different situations?"
 
-Most of the time, we treat these prompts as diagnostic checks to see what stuck. However, an August 2026 study in the *Journal of Cognitive Neuroscience* by Rice University psychological scientist Marc Coutanche and doctoral student Amy Qi suggests that remembering is far from a passive playback. **The angle from which we retrieve a memory leaves a measurable neural trace that shapes how the brain represents that knowledge the next time.**
+Most of the time, we treat these prompts as diagnostic checks to see what stuck. However, an [August 2026 study](https://news.rice.edu/news/2026/how-we-remember-may-change-our-memories-study-finds) in the *Journal of Cognitive Neuroscience* by Rice University psychological scientist Marc Coutanche and doctoral student Amy Qi suggests that remembering is far from a passive playback. **The angle from which we retrieve a memory leaves a measurable neural trace that shapes how the brain represents that knowledge the next time.**
 
 ## Same Recall Accuracy, Different Neural Organization
 
@@ -51,4 +51,4 @@ For anyone guiding learning or reflection, these findings point to an important 
    The strongest reflection arcs rarely rely on a single type of prompt. Starting with specific examples to establish clear distinctions—and then stepping up to extract shared principles—helps learners walk away with knowledge that is both grounded in detail and flexible enough to transfer.
 
 **Reference**  
-Qi, X., & Coutanche, M. N. (2026). Memory Traces Reflect How They Were Last Accessed. *Journal of Cognitive Neuroscience*, 38(11), 2095–2112. https://doi.org/10.1162/JOCN.a.2682
+Qi, X., & Coutanche, M. N. (2026). Memory Traces Reflect How They Were Last Accessed. *Journal of Cognitive Neuroscience*, 38(11), 2095–2112. [https://doi.org/10.1162/JOCN.a.2682](https://doi.org/10.1162/JOCN.a.2682)

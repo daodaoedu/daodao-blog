@@ -22,7 +22,7 @@ sources:
 
 在教練會談或工作坊結尾，我們常習慣透過提問來幫學習者整理收穫。有時我們會問「今天哪個具體案例讓你印象最深刻？」，有時則會問「這幾個方法背後共同的原則是什麼？」。
 
-多數時候，我們把這類提問當成一種檢查工具，用來確認對方還記得多少內容。然而，美國萊斯大學（Rice University）心理科學副教授 Marc Coutanche 與博士生 Amy Qi 於 2026 年 8 月發表在《Journal of Cognitive Neuroscience》的一項神經科學研究指出，每一次提取記憶，大腦並不是單純把檔案「原封不動播放出來」；**我們回憶資訊的角度，會直接留下神經痕跡，進而改變大腦下一次組織這份記憶的方式。**
+多數時候，我們把這類提問當成一種檢查工具，用來確認對方還記得多少內容。然而，美國萊斯大學（Rice University）心理科學副教授 Marc Coutanche 與博士生 Amy Qi 於 2026 年 8 月發表在《Journal of Cognitive Neuroscience》的[一項神經科學研究](https://news.rice.edu/news/2026/how-we-remember-may-change-our-memories-study-finds)指出，每一次提取記憶，大腦並不是單純把檔案「原封不動播放出來」；**我們回憶資訊的角度，會直接留下神經痕跡，進而改變大腦下一次組織這份記憶的方式。**
 
 ## 測驗分數相同，大腦組織知識的方式卻已改變
 
@@ -51,4 +51,4 @@ sources:
    最有效的覆盤往往不是二選一，而是先透過具體案例提取細節、拉開不同情境的差異，再引導學習者往上抽象出共通原則。透過有意識地設計提問路徑，學習者帶走的就不只是零碎回憶，而是既能看見細節、又能掌握全局的知識結構。
 
 **參考資料**  
-Qi, X., & Coutanche, M. N. (2026). Memory Traces Reflect How They Were Last Accessed. *Journal of Cognitive Neuroscience*, 38(11), 2095–2112. https://doi.org/10.1162/JOCN.a.2682
+Qi, X., & Coutanche, M. N. (2026). Memory Traces Reflect How They Were Last Accessed. *Journal of Cognitive Neuroscience*, 38(11), 2095–2112. [https://doi.org/10.1162/JOCN.a.2682](https://doi.org/10.1162/JOCN.a.2682)
